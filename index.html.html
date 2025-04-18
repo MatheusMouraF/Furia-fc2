@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro de Jogador - FURIA FC</title>
+  <style>
+    :root {
+      --fundo: #1e144f;
+      --painel: #2a1f63;
+      --dourado: #d4af37;
+      --dourado-hover: #b8952f;
+      --texto: #f5f5f5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--fundo);
+      color: var(--texto);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+      min-height: 100vh;
+    }
+
+    h1 {
+      margin-bottom: 1.5rem;
+      color: var(--dourado);
+      text-align: center;
+      font-size: 2rem;
+    }
+
+    form {
+      background-color: var(--painel);
+      padding: 2rem;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    input, select {
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      background-color: #fff;
+      color: #000;
+    }
+
+    button {
+      margin-top: 1rem;
+      background-color: var(--dourado);
+      color: var(--fundo);
+      padding: 1rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: var(--dourado-hover);
+    }
+
+    @media (max-width: 480px) {
+      form {
+        padding: 1.5rem;
+        border-radius: 10px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      input, select {
+        font-size: 0.95rem;
+        padding: 0.65rem;
+      }
+
+      button {
+        font-size: 1rem;
+        padding: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Cadastro de Jogador – FURIA FC</h1>
+  <form id="cadastroForm">
+    <label for="nome">Nome completo</label>
+    <input type="text" id="nome" name="nome" required>
+
+    <label for="apelido">Apelido (caso tenha)</label>
+    <input type="text" id="apelido" name="apelido">
+
+    <label for="nascimento">Data de nascimento</label>
+    <input type="date" id="nascimento" name="nascimento" required>
+
+    <label for="idade">Idade</label>
+    <input type="number" id="idade" name="idade" min="10" max="99">
+
+    <label for="altura">Altura (cm)</label>
+    <input type="number" id="altura" name="altura">
+
+    <label for="peso">Peso (kg)</label>
+    <input type="number" id="peso" name="peso">
+
+    <label for="perna">Com qual perna você chuta?</label>
+    <select id="perna" name="perna">
+      <option value="direita">Direita</option>
+      <option value="esquerda">Esquerda</option>
+      <option value="ambas">Ambas</option>
+    </select>
+
+    <label for="posicao">Posição preferida</label>
+    <select id="posicao" name="posicao">
+      <option value="goleiro">Goleiro</option>
+      <option value="zagueiro">Zagueiro</option>
+      <option value="lateral">Lateral</option>
+      <option value="volante">Volante</option>
+      <option value="meia">Meia</option>
+      <option value="atacante">Atacante</option>
+      <option value="ponta">Ponta</option>
+      <option value="outra">Outra</option>
+    </select>
+
+    <label for="experiencia">Nível de experiência</label>
+    <select id="experiencia" name="experiencia">
+      <option value="iniciante">Iniciante</option>
+      <option value="intermediario">Intermediário</option>
+      <option value="avancado">Avançado</option>
+      <option value="regular">Joga em time regularmente</option>
+    </select>
+
+    <label for="telefone">Telefone / WhatsApp</label>
+    <input type="tel" id="telefone" name="telefone" required>
+
+    <label for="instagram">Instagram (opcional)</label>
+    <input type="text" id="instagram" name="instagram">
+
+    <label for="endereco">Endereço (bairro ou cidade)</label>
+    <input type="text" id="endereco" name="endereco">
+
+    <button type="submit">Enviar</button>
+  </form>
+
+  <script>
+    const form = document.getElementById("cadastroForm");
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      const webhookURL = "SUA_URL_DO_WEB_APP"; // ⬅️ Cole aqui a URL do seu Web App do Google Apps Script
+
+      try {
+        const response = await fetch(webhookURL, {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+
+        if (response.ok) {
+          alert("Cadastro enviado com sucesso!");
+          form.reset();
+        } else {
+          alert("Erro ao enviar. Verifique os dados e tente novamente.");
+        }
+      } catch (error) {
+        console.error("Erro ao conectar:", error);
+        alert("Erro de conexão. Tente novamente mais tarde.");
+      }
+    });
+  </script>
+</body>
+</html>
